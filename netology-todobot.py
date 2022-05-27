@@ -1,33 +1,37 @@
 HELP ="""
 add - add task
-all - list all tasks
+all - list of all tasks
+show - list of tasks for particular date
 del - delete task
 exit/quit - stop the bot
 help - list all commands
 """
 
-today = []
-tomorrow = []
-other = []
+tasks = {}
 
 while True:
     req = input("Enter command:")
     if req == "help":
         print(HELP)
     elif req == "all":
-        print(today, tomorrow, other)
+        for date in tasks:
+            for task in tasks[date]:
+                print(date, "-", task)
+    elif req == "show":
+        date = input("Enter date for show: ")
+        if date in tasks:
+            for task in tasks[date]:
+                print(date,"-", task)
+        else:
+            print("There are no tasks for", date)
     elif req == "add":
         task = input("Enter new task: ")
         date = input("Enter the day to complete task: ")
-        if date == "today":
-            today.append(task)
-            print("Task added to " + date + "'s list.")
-        elif date == "tomorrow":
-            tomorrow.append(task)
-            print("Task added to " + date + "'s list.")
+        if date in tasks:
+            tasks[date].append(task)
         else:
-            other.append(task)
-            print("Task added to other's list.")
+            tasks[date] = [task]
+        print("Task", task,"added to", date)
     elif req == "del":
       print("Task deleted.")
     elif req == "exit" or req == "quit":
